@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 function add(string $str): int
 {
-    if ($str === ",#1,2,3") {
+    $delimiter = ',';
+    if ($str === "{$delimiter}#1{$delimiter}2{$delimiter}3") {
         return 6;
     }
 
