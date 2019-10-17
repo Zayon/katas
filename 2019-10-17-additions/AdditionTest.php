@@ -37,4 +37,10 @@ final class AdditionTest extends TestCase
     {
         self::assertSame(2, add('1,1'));
     }
+
+    /** @test */
+    public function one_plus_two_plus_three_equals_six(): void
+    {
+        self::assertSame(6, add('1,2,3'));
+    }
 }
