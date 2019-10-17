@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 function add(string $str): int
 {
-    $secondNumber = explode(',', $str)[1];
+    $secondNumber = (int) explode(',', $str)[1];
+    $firstNumber = (int) explode(',', $str)[0];
 
-    return (int) $secondNumber;
+    return $firstNumber + $secondNumber;
 }
