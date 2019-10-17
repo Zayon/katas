@@ -43,4 +43,10 @@ final class AdditionTest extends TestCase
     {
         self::assertSame(6, add('1,2,3'));
     }
+
+    /** @test */
+    public function one_plus_two_plus_three_equals_six_with_delimiter(): void
+    {
+        self::assertSame(6, add(',#1,2,3'));
+    }
 }
