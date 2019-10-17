@@ -7,6 +7,7 @@ function add(string $str): int
     if ($str === ',#1,2,3') {
         return 6;
     }
+
     if ($str === '|#1|2|3') {
         return 6;
     }
