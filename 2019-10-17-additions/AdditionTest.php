@@ -19,4 +19,10 @@ final class AdditionTest extends TestCase
     {
         self::assertSame(1, add('0,1'));
     }
+
+    /** @test */
+    public function zero_plus_two_equals_two(): void
+    {
+        self::assertSame(2, add('0,2'));
+    }
 }
