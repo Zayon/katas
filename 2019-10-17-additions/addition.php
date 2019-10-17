@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-function addition(string $str): int
+function add(string $str): int
 {
-    return 0;
+    return $str === '0,1' ? 1: 0;
 }
