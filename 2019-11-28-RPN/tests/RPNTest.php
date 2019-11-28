@@ -36,6 +36,17 @@ final class RPNTest extends TestCase
      *
      * @throws
      */
+    public function it_cannot_divide_by_zero(): void
+    {
+        $this->expectError();
+        (new RPN())->execute('1 0 /', new ArabicNotationParser());
+    }
+
+    /**
+     * @test
+     *
+     * @throws
+     */
     public function it_divides_6_by_3(): void
     {
         self::assertSame(2, (new RPN())->execute('6 3 /', new ArabicNotationParser()));
