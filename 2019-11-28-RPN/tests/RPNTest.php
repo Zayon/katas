@@ -5,34 +5,28 @@ use PHPUnit\Framework\TestCase;
 
 final class RPNTest extends TestCase
 {
-    public function integersProvider(): array
+    public function additionProvider(): array
     {
         return [
-            [1, 1],
-            [1, 2],
-            [1, 3],
-            [1, 4],
-            [1, 5],
-            [1, 6],
-            [1, 7],
-            [1, 8],
-            [1, 9],
-            [1, 10],
+            ['1 1 +', 2],
+            ['1 2 +', 3],
+            ['1 3 +', 4],
+            ['1 4 +', 5],
+            ['1 5 +', 6],
+            ['1 6 +', 7],
+            ['1 7 +', 8],
+            ['1 8 +', 9],
+            ['1 9 +', 10],
+            ['1 10 +', 11],
         ];
     }
 
     /**
      * @test
-     *
-     * @dataProvider integersProvider
-     *
-     * @param int $left
-     * @param int $right
+     * @dataProvider additionProvider
      */
-    public function it_adds_correctly(int $left, int $right): void
+    public function it_adds_correctly(string $input, int $expectedOutput): void
     {
-        $expectedResult = $left + $right;
-
-        self::assertSame($expectedResult, (new RPN())->execute(sprintf('%d %d+', $left, $right)));
+        self::assertSame($expectedOutput, (new RPN())->execute($input));
     }
 }
