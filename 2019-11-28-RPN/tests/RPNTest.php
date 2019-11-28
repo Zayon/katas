@@ -32,7 +32,7 @@ final class RPNTest extends TestCase
     }
 
     /** @test */
-    public function it_mutiplies_3_and_2(): void
+    public function it_multiplies_3_and_2(): void
     {
         self::assertSame(6, (new RPN())->execute('3 2 *', new ArabicNotationParser()));
     }

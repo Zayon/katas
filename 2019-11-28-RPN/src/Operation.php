@@ -9,6 +9,7 @@ final class Operation
 
     /** @var int */
     private $firstOperand;
+
     /** @var string */
     private $operator;
 
@@ -19,7 +20,7 @@ final class Operation
     ) {
         $this->secondOperand = $secondOperand;
         $this->firstOperand  = $firstOperand;
-        $this->operator = $operator;
+        $this->operator      = $operator;
     }
 
     public function evaluate(): int
@@ -28,6 +29,6 @@ final class Operation
             return $this->firstOperand + $this->secondOperand;
         }
 
-        return 0;
+        return $this->firstOperand * $this->secondOperand;
     }
 }
