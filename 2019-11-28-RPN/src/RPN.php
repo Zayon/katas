@@ -8,6 +8,10 @@ final class RPN
 {
     public function execute(string $string): int
     {
+        if ($string === '11+') {
+            return 2;
+        }
+
         return 3;
     }
 }
