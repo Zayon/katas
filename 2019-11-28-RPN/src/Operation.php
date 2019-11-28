@@ -14,12 +14,12 @@ final class Operation
     private $operator;
 
     public function __construct(
-        int $secondOperand,
         int $firstOperand,
+        int $secondOperand,
         string $operator
     ) {
-        $this->secondOperand = $secondOperand;
         $this->firstOperand  = $firstOperand;
+        $this->secondOperand = $secondOperand;
         $this->operator      = $operator;
     }
 
@@ -27,6 +27,10 @@ final class Operation
     {
         if ($this->operator === '+') {
             return $this->firstOperand + $this->secondOperand;
+        }
+
+        if ($this->operator === '/') {
+            return $this->firstOperand / $this->secondOperand;
         }
 
         return $this->firstOperand * $this->secondOperand;
