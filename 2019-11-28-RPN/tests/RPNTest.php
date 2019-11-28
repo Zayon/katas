@@ -1,6 +1,7 @@
 <?php
 
 use Kata\ArabicNotationParser;
+use Kata\OperationEvaluator;
 use Kata\RPN;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +29,7 @@ final class RPNTest extends TestCase
      */
     public function it_adds_correctly_with_arabic_notation(string $input, int $expectedOutput): void
     {
-        self::assertSame($expectedOutput, (new RPN())->execute($input, new ArabicNotationParser()));
+        self::assertSame($expectedOutput, $this->getRPN()->execute($input, new ArabicNotationParser()));
     }
 
     /**
@@ -39,7 +40,7 @@ final class RPNTest extends TestCase
     public function it_cannot_divide_by_zero(): void
     {
         $this->expectError();
-        (new RPN())->execute('1 0 /', new ArabicNotationParser());
+        $this->getRPN()->execute('1 0 /', new ArabicNotationParser());
     }
 
     /**
@@ -49,12 +50,21 @@ final class RPNTest extends TestCase
      */
     public function it_divides_6_by_3(): void
     {
-        self::assertSame(2, (new RPN())->execute('6 3 /', new ArabicNotationParser()));
+        self::assertSame(2, $this->getRPN()->execute('6 3 /', new ArabicNotationParser()));
     }
 
     /** @test */
     public function it_multiplies_3_and_2(): void
     {
-        self::assertSame(6, (new RPN())->execute('3 2 *', new ArabicNotationParser()));
+        self::assertSame(6, $this->getRPN()->execute('3 2 *', new ArabicNotationParser()));
+    }
+
+    /**
+     *
+     * @return RPN
+     */
+    private function getRPN(): RPN
+    {
+        return (new RPN(new OperationEvaluator()));
     }
 }
