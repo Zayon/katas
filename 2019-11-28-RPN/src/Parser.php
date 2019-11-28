@@ -6,6 +6,6 @@ namespace Kata;
 
 interface Parser
 {
-    /** @return int[] */
-    public function parse(string $notation): array;
+    /** @return Operation */
+    public function parse(string $notation): Operation;
 }

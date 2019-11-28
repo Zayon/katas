@@ -8,8 +8,8 @@ final class RPN
 {
     public function execute(string $string, Parser $parser): int
     {
-        [$number1, $number2] = $parser->parse($string);
+        $operation = $parser->parse($string);
 
-        return $number1 + $number2;
+        return $operation->evaluate();
     }
 }

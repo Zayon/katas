@@ -6,13 +6,13 @@ namespace Kata;
 
 final class ArabicNotationParser implements Parser
 {
-    public function parse(string $notation): array
+    public function parse(string $notation): Operation
     {
         [$number1, $number2] = explode(' ', $notation);
 
-        return [
+        return new Operation(
             (int) $number1,
             (int) $number2
-        ];
+        );
     }
 }
