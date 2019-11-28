@@ -6,5 +6,8 @@ namespace Kata;
 
 final class RPN
 {
-
+    public function execute(string $string): int
+    {
+        return 3;
+    }
 }

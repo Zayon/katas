@@ -1,16 +1,15 @@
 <?php
 
+use Kata\RPN;
 use PHPUnit\Framework\TestCase;
 
 final class RPNTest extends TestCase
 {
     /**
      * @test
-     *
-     * @throws
      */
-    public function it_tests()
+    public function it_adds_1_and_2(): void
     {
-        self::assertTrue(false);
+        self::assertSame(3, (new RPN())->execute('12+'));
     }
 }
