@@ -33,6 +33,6 @@ final class RPNTest extends TestCase
     {
         $expectedResult = $left + $right;
 
-        self::assertSame($expectedResult, (new RPN())->execute(sprintf('%d%d+', $left, $right)));
+        self::assertSame($expectedResult, (new RPN())->execute(sprintf('%d %d+', $left, $right)));
     }
 }

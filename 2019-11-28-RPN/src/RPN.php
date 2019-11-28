@@ -8,6 +8,8 @@ final class RPN
 {
     public function execute(string $string): int
     {
-        return $string[0] + $string[1];
+        [$number1, $number2] = explode(' ', $string);
+
+        return (int) $number1 + (int) $number2;
     }
 }
