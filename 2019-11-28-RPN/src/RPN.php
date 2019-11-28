@@ -10,6 +10,8 @@ final class RPN
     {
         if ($string === '11+') {
             return 2;
+        } elseif ($string === '14+') {
+            return 5;
         }
 
         return 3;

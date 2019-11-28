@@ -5,27 +5,33 @@ use PHPUnit\Framework\TestCase;
 
 final class RPNTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_adds_1_and_1(): void
+    public function integersProvider(): array
     {
-        self::assertSame(2, (new RPN())->execute('11+'));
+        return [
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [1, 4],
+            [1, 5],
+            [1, 6],
+            [1, 7],
+            [1, 8],
+            [1, 9],
+        ];
     }
 
     /**
      * @test
+     *
+     * @dataProvider integersProvider
+     *
+     * @param int $left
+     * @param int $right
      */
-    public function it_adds_1_and_2(): void
+    public function it_adds_correctly(int $left, int $right): void
     {
-        self::assertSame(3, (new RPN())->execute('12+'));
-    }
+        $expectedResult = $left + $right;
 
-    /**
-     * @test
-     */
-    public function it_adds_1_and_4(): void
-    {
-        self::assertSame(5, (new RPN())->execute('14+'));
+        self::assertSame($expectedResult, (new RPN())->execute(sprintf('%d%d+', $left, $right)));
     }
 }
