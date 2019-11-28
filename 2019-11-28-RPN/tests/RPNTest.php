@@ -31,6 +31,16 @@ final class RPNTest extends TestCase
         self::assertSame($expectedOutput, (new RPN())->execute($input, new ArabicNotationParser()));
     }
 
+    /**
+     * @test
+     *
+     * @throws
+     */
+    public function it_divides_6_by_3(): void
+    {
+        self::assertSame(2, (new RPN())->execute('6 3 /', new ArabicNotationParser()));
+    }
+
     /** @test */
     public function it_multiplies_3_and_2(): void
     {
