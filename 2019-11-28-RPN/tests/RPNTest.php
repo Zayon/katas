@@ -1,11 +1,12 @@
 <?php
 
+use Kata\ArabicNotationParser;
 use Kata\RPN;
 use PHPUnit\Framework\TestCase;
 
 final class RPNTest extends TestCase
 {
-    public function additionProvider(): array
+    public function arabicNotationAdditionProvider(): array
     {
         return [
             ['1 1 +', 2],
@@ -23,10 +24,10 @@ final class RPNTest extends TestCase
 
     /**
      * @test
-     * @dataProvider additionProvider
+     * @dataProvider arabicNotationAdditionProvider
      */
-    public function it_adds_correctly(string $input, int $expectedOutput): void
+    public function it_adds_correctly_with_arabic_notation(string $input, int $expectedOutput): void
     {
-        self::assertSame($expectedOutput, (new RPN())->execute($input));
+        self::assertSame($expectedOutput, (new RPN())->execute($input, new ArabicNotationParser()));
     }
 }
