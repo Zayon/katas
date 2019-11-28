@@ -1,6 +1,9 @@
 <?php
 
+use Kata\Addition;
 use Kata\ArabicNotationParser;
+use Kata\Division;
+use Kata\Multiplication;
 use Kata\OperationEvaluator;
 use Kata\RPN;
 use PHPUnit\Framework\TestCase;
@@ -65,6 +68,14 @@ final class RPNTest extends TestCase
      */
     private function getRPN(): RPN
     {
-        return (new RPN(new OperationEvaluator()));
+        return (new RPN(
+            new OperationEvaluator(
+                [
+                    new Addition(),
+                    new Division(),
+                    new Multiplication()
+                ]
+            )
+        ));
     }
 }

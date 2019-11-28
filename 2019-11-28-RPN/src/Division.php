@@ -2,16 +2,16 @@
 
 namespace Kata;
 
-final class Addition implements Evaluable
+final class Division implements Evaluable
 {
     public function canEvaluate($operator): bool
     {
-        return '+' === $operator;
+        return '/' === $operator;
     }
 
     public function evaluate(Operation $operation): int
     {
-        return $operation->getFirstOperand() + $operation->getSecondOperand();
+        return $operation->getFirstOperand() / $operation->getSecondOperand();
     }
 
 }
