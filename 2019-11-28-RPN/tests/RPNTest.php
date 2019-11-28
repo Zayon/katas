@@ -30,4 +30,10 @@ final class RPNTest extends TestCase
     {
         self::assertSame($expectedOutput, (new RPN())->execute($input, new ArabicNotationParser()));
     }
+
+    /** @test */
+    public function it_mutiplies_3_and_2(): void
+    {
+        self::assertSame(6, (new RPN())->execute('3 2 *', new ArabicNotationParser()));
+    }
 }

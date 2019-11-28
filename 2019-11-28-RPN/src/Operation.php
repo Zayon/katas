@@ -4,30 +4,30 @@ namespace Kata;
 
 final class Operation
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     private $secondOperand;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $firstOperand;
+    /** @var string */
+    private $operator;
 
-    /**
-     * Operation constructor.
-     *
-     * @param int $secondOperand
-     * @param int $firstOperand
-     */
-    public function __construct(int $secondOperand, int $firstOperand)
-    {
+    public function __construct(
+        int $secondOperand,
+        int $firstOperand,
+        string $operator
+    ) {
         $this->secondOperand = $secondOperand;
         $this->firstOperand  = $firstOperand;
+        $this->operator = $operator;
     }
 
     public function evaluate(): int
     {
-        return $this->firstOperand + $this->secondOperand;
+        if ($this->operator === '+') {
+            return $this->firstOperand + $this->secondOperand;
+        }
+
+        return 0;
     }
 }
