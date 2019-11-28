@@ -35,4 +35,28 @@ final class Operation
 
         return $this->firstOperand * $this->secondOperand;
     }
+
+    /**
+     * @return int
+     */
+    public function getFirstOperand(): int
+    {
+        return $this->firstOperand;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOperator(): string
+    {
+        return $this->operator;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSecondOperand(): int
+    {
+        return $this->secondOperand;
+    }
 }
