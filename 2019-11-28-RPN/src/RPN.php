@@ -8,12 +8,6 @@ final class RPN
 {
     public function execute(string $string): int
     {
-        if ($string === '11+') {
-            return 2;
-        } elseif ($string === '14+') {
-            return 5;
-        }
-
-        return 3;
+        return $string[0] + $string[1];
     }
 }
