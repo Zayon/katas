@@ -62,43 +62,30 @@ class Game2 {
         echoln2('They have rolled a '. $roll);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($roll % 2 != 0) {
-                $this->isGettingOutOfPenaltyBox = true;
-
-                echoln2($currentPlayer.' is getting out of the penalty box');
-                $this->places[$this->currentPlayer] += $roll;
-                if ($this->places[$this->currentPlayer] > 11) {
-                    $this->places[$this->currentPlayer] -= 12;
-                }
-
-                echoln2(
-                    sprintf(
-                        "%s's new location is %s",
-                        $currentPlayer,
-                        $this->places[$this->currentPlayer]
-                    )
-                );
-                echoln2('The category is '. $this->currentCategory());
-                $this->askQuestion();
-            } else {
+            if ($roll % 2 === 0) {
                 echoln2($currentPlayer.' is not getting out of the penalty box');
                 $this->isGettingOutOfPenaltyBox = false;
+                return;
             }
 
-        } else {
-
-            $this->places[$this->currentPlayer] += $roll;
-            if ($this->places[$this->currentPlayer] > 11) {
-                $this->places[$this->currentPlayer] -= 12;
-            }
-
-            echoln2(
-                sprintf("%s's new location is %s", $currentPlayer, $this->places[$this->currentPlayer])
-            );
-            echoln2('The category is '. $this->currentCategory());
-            $this->askQuestion();
+            $this->isGettingOutOfPenaltyBox = true;
+            echoln2($currentPlayer.' is getting out of the penalty box');
         }
 
+        $this->places[$this->currentPlayer] += $roll;
+        if ($this->places[$this->currentPlayer] > 11) {
+            $this->places[$this->currentPlayer] -= 12;
+        }
+
+        echoln2(
+            sprintf(
+                "%s's new location is %s",
+                $currentPlayer,
+                $this->places[$this->currentPlayer]
+            )
+        );
+        echoln2('The category is '. $this->currentCategory());
+        $this->askQuestion();
     }
 
     private function askQuestion(): void
@@ -120,16 +107,14 @@ class Game2 {
 
     private function currentCategory(): string
     {
-        if (in_array($this->places[$this->currentPlayer], [0, 4, 8], true)) {
-            return 'Pop';
-        }
-        if (in_array($this->places[$this->currentPlayer], [1, 5, 9], true)) {
-            return 'Science';
-        }
-        if (in_array($this->places[$this->currentPlayer], [2, 6, 10], true)) {
-            return 'Sports';
-        }
-        return 'Rock';
+        $moduloMap = [
+            0 => 'Pop',
+            1 => 'Science',
+            2 => 'Sports',
+            3 => 'Rock',
+        ];
+
+        return $moduloMap[$this->places[$this->currentPlayer] % 4];
     }
 
     public function correctAnswer(): bool
