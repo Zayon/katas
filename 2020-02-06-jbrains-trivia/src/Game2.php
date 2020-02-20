@@ -1,142 +1,113 @@
 <?php
+
+declare(strict_types=1);
+
+require_once __DIR__.'/QuestionStack.php';
+require_once __DIR__.'/Player.php';
+require_once __DIR__.'/Players.php';
+
 function echoln2($string) {
     echo $string."\n";
 }
 
 class Game2 {
-    private $players;
-    private $places;
-    private $purses ;
-    private $inPenaltyBox ;
+    private const CATEGORY_MAP = [
+        self::CATEGORY_POP,
+        self::CATEGORY_SCIENCE,
+        self::CATEGORY_SPORTS,
+        self::CATEGORY_ROCK,
+    ];
 
-    private $popQuestions;
-    private $scienceQuestions;
-    private $sportsQuestions;
-    private $rockQuestions;
+    private const CATEGORY_POP = 'Pop';
+    private const CATEGORY_SCIENCE = 'Science';
+    private const CATEGORY_SPORTS = 'Sports';
+    private const CATEGORY_ROCK = 'Rock';
 
-    private $currentPlayer = 0;
+    /** @var QuestionStack[] */
+    private array $board = [];
+
     private $isGettingOutOfPenaltyBox;
+
+    private Players $players;
 
     public function  __construct()
     {
-        $this->players = array();
-        $this->places = array(0);
-        $this->purses  = array(0);
-        $this->inPenaltyBox  = array(0);
+        $this->players = new Players();
 
-        $this->popQuestions = array();
-        $this->scienceQuestions = array();
-        $this->sportsQuestions = array();
-        $this->rockQuestions = array();
-
-        for ($i = 0; $i < 50; $i++) {
-            $this->popQuestions[] = 'Pop Question '.$i;
-            $this->scienceQuestions[] = 'Science Question '.$i;
-            $this->sportsQuestions[] = 'Sports Question '.$i;
-            $this->rockQuestions[] = 'Rock Question '. $i;
+        foreach (self::CATEGORY_MAP as $category) {
+            $this->board[$category] = new QuestionStack($category);
         }
     }
 
-    public function add($playerName): void
+    public function add(string $playerName): void
     {
-        $this->players[] = $playerName;
-        $howManyPlayers = $this->howManyPlayers();
-
-        $this->places[$howManyPlayers] = 0;
-        $this->purses[$howManyPlayers] = 0;
-        $this->inPenaltyBox[$howManyPlayers] = false;
+        $this->players->add(new Player($playerName));
 
         echoln2($playerName .' was added');
-        echoln2('They are player number '. $howManyPlayers);
+        echoln2('They are player number '. count($this->players));
     }
 
-    private function howManyPlayers(): int
+    public function roll(int $roll): void
     {
-        return count($this->players);
-    }
-
-    public function roll($roll): void
-    {
-        $currentPlayer = $this->players[$this->currentPlayer];
+        $currentPlayer = $this->players->current();
         echoln2($currentPlayer.' is the current player');
         echoln2('They have rolled a '. $roll);
 
-        if ($this->inPenaltyBox[$this->currentPlayer]) {
+        if ($currentPlayer->isInPenaltyBox()) {
             if ($roll % 2 === 0) {
                 echoln2($currentPlayer.' is not getting out of the penalty box');
                 $this->isGettingOutOfPenaltyBox = false;
+
                 return;
             }
 
             $this->isGettingOutOfPenaltyBox = true;
+
             echoln2($currentPlayer.' is getting out of the penalty box');
         }
 
-        $this->places[$this->currentPlayer] += $roll;
-        if ($this->places[$this->currentPlayer] > 11) {
-            $this->places[$this->currentPlayer] -= 12;
-        }
+        $currentPlayer->setPlace($this->getNewPlayerPlace($currentPlayer, $roll));
 
         echoln2(
             sprintf(
                 "%s's new location is %s",
                 $currentPlayer,
-                $this->places[$this->currentPlayer]
+                $currentPlayer->getPlace()
             )
         );
-        echoln2('The category is '. $this->currentCategory());
         $this->askQuestion();
     }
 
     private function askQuestion(): void
     {
-        if ($this->currentCategory() === 'Pop') {
-            echoln2(array_shift($this->popQuestions));
-        }
-        if ($this->currentCategory() === 'Science') {
-            echoln2(array_shift($this->scienceQuestions));
-        }
-        if ($this->currentCategory() === 'Sports') {
-            echoln2(array_shift($this->sportsQuestions));
-        }
-        if ($this->currentCategory() === 'Rock') {
-            echoln2(array_shift($this->rockQuestions));
-        }
-    }
-
-
-    private function currentCategory(): string
-    {
-        $moduloMap = [
-            0 => 'Pop',
-            1 => 'Science',
-            2 => 'Sports',
-            3 => 'Rock',
-        ];
-
-        return $moduloMap[$this->places[$this->currentPlayer] % 4];
+        $category = self::CATEGORY_MAP[$this->players->current()->getPlace() % 4];
+        echoln2('The category is '.$category);
+        echoln2($this->board[$category]->next());
     }
 
     public function correctAnswer(): bool
     {
-        if ($this->inPenaltyBox[$this->currentPlayer] && !$this->isGettingOutOfPenaltyBox) {
-            $this->nextPlayer();
+        $currentPlayer =$this->players->current();
+
+        if (!$this->isGettingOutOfPenaltyBox && $currentPlayer->isInPenaltyBox()) {
+            $this->players->next();
 
             return true;
         }
 
         echoln2('Answer was correct!!!!');
-        $this->purses[$this->currentPlayer]++;
+        $currentPlayer->addCoin();
+
         echoln2(
             sprintf(
                 '%s now has %s Gold Coins.',
-                $this->players[$this->currentPlayer],
-                $this->purses[$this->currentPlayer]
+                $currentPlayer,
+                $currentPlayer->getNumberOfCoins()
             )
         );
 
         $shouldGameContinue = $this->shouldGameContinue();
-        $this->nextPlayer();
+        $this->players->next();
 
         return $shouldGameContinue;
     }
@@ -144,24 +115,22 @@ class Game2 {
     public function wrongAnswer(): bool
     {
         echoln2('Question was incorrectly answered');
-        echoln2($this->players[$this->currentPlayer] .' was sent to the penalty box');
-        $this->inPenaltyBox[$this->currentPlayer] = true;
+        $currentPlayer = $this->players->current();
+        echoln2($currentPlayer.' was sent to the penalty box');
+        $currentPlayer->putInPenaltyBox();
 
-        $this->nextPlayer();
+        $this->players->next();
 
         return true;
     }
 
     private function shouldGameContinue(): bool
     {
-        return !($this->purses[$this->currentPlayer] === 6);
+        return !($this->players->current()->getNumberOfCoins() === 6);
     }
 
-    private function nextPlayer(): void
+    private function getNewPlayerPlace(Player $player, int $roll): int
     {
-        $this->currentPlayer++;
-        if ($this->currentPlayer === count($this->players)) {
-            $this->currentPlayer = 0;
-        }
+        return ($player->getPlace() + $roll) % 12;
     }
 }
