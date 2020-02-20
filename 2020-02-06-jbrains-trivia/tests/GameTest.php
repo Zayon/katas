@@ -12,14 +12,14 @@ class GameTest extends TestCase
         srand(128937129837);
 
         ob_start();
-        include 'GameRunner.php';
-        $result = ob_get_flush();
+        include 'goldenMaster/GameRunner.php';
+        $expected = ob_get_flush();
 
         srand(128937129837);
 
         ob_start();
-        include 'goldenMaster/GameRunner.php';
-        $expected = ob_get_flush();
+        include __DIR__.'/../src/GameRunner.php';
+        $result = ob_get_flush();
 
         static::assertSame(
             $expected,

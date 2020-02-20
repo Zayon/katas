@@ -1,10 +1,10 @@
 <?php
 
-include __DIR__.'/Game.php';
+include_once __DIR__.'/Game2.php';
 
 $notAWinner;
 
-$aGame = new Game();
+$aGame = new Game2();
 
 $aGame->add("Chet");
 $aGame->add("Pat");
